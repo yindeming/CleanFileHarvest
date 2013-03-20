@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib
 
+
 def crawl_web(seed): # returns index, graph of inlinks
     tocrawl = [seed]
     crawled = []
