@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import urllib
 
-
 def crawl_web(seed): # returns index, graph of inlinks
     tocrawl = [seed]
     crawled = []
@@ -18,13 +17,11 @@ def crawl_web(seed): # returns index, graph of inlinks
             crawled.append(page)
     return index, graph
 
-
 def get_all_links(page):
     links = []
     for link in page.find_all('a'):
-        links.append(link.get('href'))
+    	links.append(link.get('href'))
     return links
-
 
 def union(a, b):
     for e in b:
@@ -32,10 +29,10 @@ def union(a, b):
             a.append(e)
 
 def add_page_to_index(index, url, content):
-    text = content.get_text()#since content is no longer string, we need to get split() to work again
-    words = text.split()
-    for word in words:
-        add_to_index(index, word, url)
+	text = content.get_text()
+	words = text.split()
+	for word in words:
+		add_to_index(index, word, url)
         
 def add_to_index(index, keyword, url):
     if keyword in index:
@@ -55,8 +52,8 @@ def get_page(url):
     else:
         print "Page not in cache: " + url
         try: 
-            content = urllib.urlopen(url).read()
-            return BeautifulSoup(content)
+        	content = urllib.urlopen(url).read()
+        	return BeautifulSoup(content)
         except:
         	return ""
         	
