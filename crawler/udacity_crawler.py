@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse, urljoin
+import robotparser
 
 def crawl_web(seed): # returns index, graph of inlinks
     tocrawl = [seed]
@@ -22,6 +23,10 @@ def crawl_web(seed): # returns index, graph of inlinks
 def get_all_links(page, url):
     links = []
     page_url = urlparse(url)
+    base = page_url[0] + '://' + page_url[1]
+    robots_url = base + 'robots.txt'
+    rp = robotparser.RobotFileParser()
+    rp.set_url(robots_url)
     print "Page url: ", page_url
     for link in page.find_all('a'):
     	link_url = link.get('href')
@@ -29,6 +34,9 @@ def get_all_links(page, url):
         #Ignore links that are 'None'
         if link_url == None:
             pass
+        elif not rp.can_fetch('*', link_url):
+            print "Page off limits!"
+	    pass
         #Ignore links that are internal page anchors.
         #Urlparse considers internal anchors 'fragment identifiers', at index 5.
 	elif urlparse(link_url)[5] and not urlparse(link_url)[2]:#If a link has a network location
@@ -36,7 +44,6 @@ def get_all_links(page, url):
         elif urlparse(link_url)[1]:
 	    links.append(link_url)
 	else:
-	    base = page_url[0] + '://' + page_url[1] #Get a base link from the page url
 	    network = urljoin(base, link_url) #Join it with the path
 	    links.append(network)
     return links
