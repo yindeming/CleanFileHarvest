@@ -1,4 +1,4 @@
-#This is master branch
+# coding = utf8
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse, urljoin
@@ -24,8 +24,8 @@ def get_all_links(page, url):
     links = []
     page_url = urlparse(url)
     base = page_url[0] + '://' + page_url[1]
-    robots_url = base + 'robots.txt'
-    rp = robotexclusionrulesparser.RobotFileParserLookalilke()
+    robots_url = urljoin(base, '/robots.txt')
+    rp = robotexclusionrulesparser.RobotFileParserLookalike()
     rp.set_url(robots_url)
     rp.read()
     #print rp
@@ -78,7 +78,7 @@ def lookup(index, keyword):
 def get_page(url):
     page_url = urlparse(url)
     base = page_url[0] + '://' + page_url[1]
-    robots_url = base + 'robots.txt'
+    robots_url = base + '/robots.txt'
     rp = robotexclusionrulesparser.RobotFileParserLookalike()
     rp.set_url(robots_url)
     rp.read()
@@ -96,5 +96,5 @@ def get_page(url):
             return BeautifulSoup(""), ""
         	
 cache = {}
-print crawl_web('http://www.udacity.com')
+print crawl_web('http://www.udacity-forums.com/')
 #print crawl_web('http://www.udacity.com/cs101x/index.html')
