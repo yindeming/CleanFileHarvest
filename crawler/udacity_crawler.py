@@ -5,7 +5,6 @@ import robotexclusionrulesparser as rerp
 from bs4 import BeautifulSoup
 from urlparse import urlparse, urljoin
 
-
 def crawl_web(seed): # returns index, graph of inlinks
 	if is_udacity(seed):
 		tocrawl = [seed]
