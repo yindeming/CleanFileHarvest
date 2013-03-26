@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urlparse, urljoin
-import robotparser
+import robotexclusionrulesparser
 
 def crawl_web(seed): # returns index, graph of inlinks
     tocrawl = [seed]
@@ -25,9 +25,10 @@ def get_all_links(page, url):
     page_url = urlparse(url)
     base = page_url[0] + '://' + page_url[1]
     robots_url = base + 'robots.txt'
-    rp = robotparser.RobotFileParser()
+    rp = robotexclusionrulesparser.RobotFileParserLookalilke()
     rp.set_url(robots_url)
-    print "Page url: ", page_url
+    rp.read()
+    #print rp
     for link in page.find_all('a'):
     	link_url = link.get('href')
         print "Found a link: ", link_url
@@ -75,6 +76,15 @@ def lookup(index, keyword):
         return None
 
 def get_page(url):
+    page_url = urlparse(url)
+    base = page_url[0] + '://' + page_url[1]
+    robots_url = base + 'robots.txt'
+    rp = robotexclusionrulesparser.RobotFileParserLookalike()
+    rp.set_url(robots_url)
+    rp.read()
+    if not rp.can_fetch('*', url):
+        print "page off limits!"
+        return BeautifulSoup(""), ""        
     if url in cache:
         return cache[url]
     else:
