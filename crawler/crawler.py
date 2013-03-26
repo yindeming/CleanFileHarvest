@@ -97,4 +97,4 @@ def get_page(url):
         	
 cache = {}
 print crawl_web('http://www.udacity-forums.com/')
-#print crawl_web('http://www.udacity.com/cs101x/index.html')
+
