@@ -11,5 +11,5 @@ CleanFileHarvest
 
 ## Reference
 
-The building of his crawler follows instructions from [CS101 in Udacity](https://www.udacity.com/course/viewer#!/c-cs101) and [DaveDaveFind](http://davedavefind.appspot.com/)
+The building of this crawler follows instructions from [CS101 in Udacity](https://www.udacity.com/course/viewer#!/c-cs101) and [DaveDaveFind](http://davedavefind.appspot.com/).
 
