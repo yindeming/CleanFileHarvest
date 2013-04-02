@@ -11,12 +11,12 @@ def crawl_web(seed): # returns index, graph of inlinks
     index = {} 
     while tocrawl: 
         page = tocrawl.pop()
-        if page not in crawled:
+        if page not in crawled and len(crawled) < max_pages and depth <= max_depth:
             soup, url = get_page(page)
             add_page_to_index(index, page, soup)
             outlinks = get_all_links(soup, url)
             graph[page] = outlinks
-            add_new_links(tocrawl, outlinks)
+            add_new_links(tocrawl, outlinks, depth)
             crawled.append(page)
     return index, graph
 
@@ -52,7 +52,7 @@ def get_all_links(page, url):
 def add_new_links(tocrawl, outlinks):
     for link in outlinks:
         if link not in tocrawl:
-	    tocrawl.append(link)
+	    tocrawl.append([link, depth+1])
 
 def add_page_to_index(index, url, content):
     try:
