@@ -28,11 +28,15 @@ def crawl_web(seed, max_pages, max_depth): # returns index, graph of inlinks
 def get_all_links(page, url):
     links = []
     page_url = urlparse(url)
-    base = page_url[0] + '://' + page_url[1]
-    robots_url = urljoin(base, '/robots.txt')
+    if page_url[0]:
+        base = page_url[0] + '://' + page_url[1]
+        robots_url = urljoin(base, '/robots.txt')
     rp = robotexclusionrulesparser.RobotFileParserLookalike()
     rp.set_url(robots_url)
-    rp.read()
+    try:
+        rp.read()
+    except:
+        pass
     #print rp
     for link in page.find_all('a'):
     	link_url = link.get('href')
@@ -86,14 +90,17 @@ def get_page(url):
     robots_url = base + '/robots.txt'
     rp = robotexclusionrulesparser.RobotFileParserLookalike()
     rp.set_url(robots_url)
-    rp.read()
+    try:
+        rp.read()
+    except:
+        pass
     if not rp.can_fetch('*', url):
-        print "page off limits!"
+        print "[get_page()] page off limits!"
         return BeautifulSoup(""), ""        
     if url in cache:
         return cache[url]
     else:
-        print "Page not in cache: " + url
+        print "[get_page()] Page not in cache: " + url
         try: 
             content = urllib.urlopen(url).read()
             return BeautifulSoup(content), url
@@ -105,7 +112,10 @@ def polite(url): #GEt depay time from robots.txt
     base = page_url[0] + '://' + page_url[1]
     robots_url = urljoin(base, '/robots.txt')
     rp = robotexclusionrulesparser.RobotExclusionRulesParser()
-    rp.fetch(robots_url)
+    try:
+        rp.fetch(robots_url)
+    except:
+        pass
     if rp.get_crawl_delay(robots_url):
     	time.sleep(rp.get_crawl_delay(robots_url))
     else:
@@ -113,17 +123,20 @@ def polite(url): #GEt depay time from robots.txt
 
 def get_file(url): #Download file
     page_url = urlparse(url)
-    response = urllib2.urlopen(url)
-    content_type = response.info().get('Content-Type')
-    if 'application' in content_type:
-    	filename = str(page_url[2].split('/')[-1])
-    	with open(filename, "wb") as code:
-    	    code.write(response.read())
+    try:
+        response = urllib2.urlopen(url)
+        content_type = response.info().get('Content-Type')
+        if 'application' in content_type:
+    	    filename = str(page_url[2].split('/')[-1])
+    	    with open(filename, "wb") as code:
+    	        code.write(response.read())
+    except:
+        pass
         	
 cache = {}
 max_pages = 100
 max_depth = 4
-index, graph = crawl_web('http://www.python.org/', max_pages, max_depth)
+index, graph = crawl_web('http://www.python.org/download', max_pages, max_depth)
 
 print "INDEX: ", index
 print ""
