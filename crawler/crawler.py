@@ -1,4 +1,5 @@
 # coding = utf8
+import time
 from bs4 import BeautifulSoup
 import urllib, urllib2
 from urlparse import urlparse, urljoin
@@ -53,7 +54,7 @@ def get_all_links(page, url):
 	    links.append(network)
     return links
 
-def add_new_links(tocrawl, outlinks):
+def add_new_links(tocrawl, outlinks, depth):
     for link in outlinks:
         if link not in tocrawl:
 	    tocrawl.append([link, depth+1])
@@ -104,8 +105,8 @@ def polite(url): #GEt depay time from robots.txt
     base = page_url[0] + '://' + page_url[1]
     robots_url = urljoin(base, '/robots.txt')
     rp = robotexclusionrulesparser.RobotExclusionRulesParser()
-    rp.fetch(robot_url)
-    if rp.getc_crawl_delay(robots_url):
+    rp.fetch(robots_url)
+    if rp.get_crawl_delay(robots_url):
     	time.sleep(rp.get_crawl_delay(robots_url))
     else:
     	time.sleep(1)
@@ -115,10 +116,9 @@ def get_file(url): #Download file
     response = urllib2.urlopen(url)
     content_type = response.info().get('Content-Type')
     if 'application' in content_type:
-    	filename = str(page_url[2].split('/')[-1]
-    	f = urllib2.urlopen(url)
+    	filename = str(page_url[2].split('/')[-1])
     	with open(filename, "wb") as code:
-    	    code.write(f.read())
+    	    code.write(response.read())
         	
 cache = {}
 max_pages = 100
