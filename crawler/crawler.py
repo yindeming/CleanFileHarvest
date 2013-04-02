@@ -117,7 +117,7 @@ def get_file(url): #Download file
     	filename = str(page_url[2].split('/')[-1]
     	f = urllib2.urlopen(url)
     	with open(filename, "wb") as code:
-    		code.write(f.read())
+    	    code.write(f.read())
         	
 cache = {}
 max_pages = 100
