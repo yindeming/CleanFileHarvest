@@ -111,6 +111,7 @@ def polite(url): #GEt depay time from robots.txt
     	time.sleep(1)
 
 def get_file(url): #Download file
+    page_url = urlparse(url)
     response = urllib2.urlopen(url)
     content_type = response.info().get('Content-Type')
     if 'application' in content_type:
