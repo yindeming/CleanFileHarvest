@@ -96,5 +96,11 @@ def get_page(url):
             return BeautifulSoup(""), ""
         	
 cache = {}
-print crawl_web('http://www.udacity-forums.com/')
-
+max_pages = 100
+max_depth = 4
+index, graph = crawl_web('http://www.udacity.com/', max_pages, max_depth)
+#print crawl_web('http://www.udacity-forums.com/')
+print "INDEX: ", index
+print ""
+print "GRAPH: ", graph
+print ""
