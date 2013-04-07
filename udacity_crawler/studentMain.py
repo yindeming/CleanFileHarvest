@@ -2,7 +2,6 @@
 ### test.py
 ###
 
-### Add your imports here:
 from search import lucky_search, ordered_search, quicksort_pages
 from crawler import crawl_web, compute_ranks
 
