@@ -4,7 +4,7 @@ import urllib
 from urlparse import urlparse, urljoin
 import robotexclusionrulesparser
 
-def crawl_web(seed, max_pages, maxdepth): # returns index, graph of inlinks
+def crawl_web(seed, max_pages, max_depth): # returns index, graph of inlinks
     tocrawl = [[seed, 0]]
     crawled = []
     graph = {}  # <url>, [list of pages it links to]
