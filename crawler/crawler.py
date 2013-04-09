@@ -1,6 +1,6 @@
 # coding = utf8
 from bs4 import BeautifulSoup
-import urllib
+import urllib, urllib2
 from urlparse import urlparse, urljoin
 import robotexclusionrulesparser
 
@@ -15,6 +15,8 @@ def crawl_web(seed, max_pages, max_depth): # returns index, graph of inlinks
         print "PAGES CRAWLED: ", len(crawled)
         if page not in crawled and len(crawled) < max_pages and depth <= max_depth:
             soup, url = get_page(page)
+            polite(page)
+            get_file(page)
             add_page_to_index(index, page, soup)
             outlinks = get_all_links(soup, url)
             graph[page] = outlinks
@@ -96,6 +98,26 @@ def get_page(url):
             return BeautifulSoup(content), url
         except:
             return BeautifulSoup(""), ""
+            
+def polite(url): #GEt depay time from robots.txt
+    page_url = urlparse(url)
+    base = page_url[0] + '://' + page_url[1]
+    robots_url = urljoin(base, '/robots.txt')
+    rp = robotexclusionrulesparser.RobotExclusionRulesParser()
+    rp.fetch(robot_url)
+    if rp.getc_crawl_delay(robots_url):
+    	time.sleep(rp.get_crawl_delay(robots_url))
+    else:
+    	time.sleep(1)
+
+def get_file(url): #Download file
+    response = urllib2.urlopen(url)
+    content_type = response.info().get('Content-Type')
+    if 'application' in content_type:
+    	filename = str(page_url[2].split('/')[-1]
+    	f = urllib2.urlopen(url)
+    	with open(filename, "wb") as code:
+    		code.write(f.read())
         	
 cache = {}
 max_pages = 100
