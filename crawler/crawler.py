@@ -4,13 +4,15 @@ import urllib
 from urlparse import urlparse, urljoin
 import robotexclusionrulesparser
 
-def crawl_web(seed): # returns index, graph of inlinks
-    tocrawl = [seed]
+def crawl_web(seed, max_pages, maxdepth): # returns index, graph of inlinks
+    tocrawl = [[seed, 0]]
     crawled = []
     graph = {}  # <url>, [list of pages it links to]
     index = {} 
     while tocrawl: 
-        page = tocrawl.pop()
+        page, depth = tocrawl.pop()
+        print "CURRENT DEPTH: ", depth
+        print "PAGES CRAWLED: ", len(crawled)
         if page not in crawled and len(crawled) < max_pages and depth <= max_depth:
             soup, url = get_page(page)
             add_page_to_index(index, page, soup)
@@ -98,8 +100,8 @@ def get_page(url):
 cache = {}
 max_pages = 100
 max_depth = 4
-index, graph = crawl_web('http://www.udacity.com/', max_pages, max_depth)
-#print crawl_web('http://www.udacity-forums.com/')
+index, graph = crawl_web('http://www.python.org/', max_pages, max_depth)
+
 print "INDEX: ", index
 print ""
 print "GRAPH: ", graph
