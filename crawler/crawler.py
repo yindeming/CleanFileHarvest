@@ -6,24 +6,26 @@ from urlparse import urlparse, urljoin
 import robotexclusionrulesparser
 
 def crawl_web(seed, max_pages, max_depth): # returns index, graph of inlinks
-    tocrawl = [[seed, 0]]
+    tocrawl = []
+    for url in crawl_list:
+        tocrawl.append([url, 0])
     crawled = []
-    graph = {}  # <url>, [list of pages it links to]
     index = {} 
     while tocrawl: 
         page, depth = tocrawl.pop()
-        print "CURRENT DEPTH: ", depth
-        print "PAGES CRAWLED: ", len(crawled)
+        print "[crawl_web()] Depth: ", depth
+        print "[crawl_web()] Pages crawled: ", len(crawled)
         if page not in crawled and len(crawled) < max_pages and depth <= max_depth:
-            soup, url = get_page(page)
             polite(page)
-            get_file(page)
+	    soup, url = get_page(page)
+	    cache[url] = soup
             add_page_to_index(index, page, soup)
             outlinks = get_all_links(soup, url)
-            graph[page] = outlinks
+            get_file(outlinks)
             add_new_links(tocrawl, outlinks, depth)
             crawled.append(page)
-    return index, graph
+    index = undupe_index(index)
+    return index
 
 def get_all_links(page, url):
     links = []
@@ -31,16 +33,17 @@ def get_all_links(page, url):
     if page_url[0]:
         base = page_url[0] + '://' + page_url[1]
         robots_url = urljoin(base, '/robots.txt')
+    else:
+    	robots_url = ""
     rp = robotexclusionrulesparser.RobotFileParserLookalike()
     rp.set_url(robots_url)
     try:
         rp.read()
     except:
         pass
-    #print rp
     for link in page.find_all('a'):
     	link_url = link.get('href')
-        print "Found a link: ", link_url
+    	print "[get_all_links()] Found a link: ", link_url
         #Ignore links that are 'None'
         if link_url == None:
             pass
@@ -53,6 +56,7 @@ def get_all_links(page, url):
             pass
         elif urlparse(link_url)[1]:
 	    links.append(link_url)
+	#elif urlparse(link_url)[2] and not urlparse(link_url)[1]:
 	else:
 	    network = urljoin(base, link_url) #Join it with the path
 	    links.append(network)
@@ -107,7 +111,7 @@ def get_page(url):
         except:
             return BeautifulSoup(""), ""
             
-def polite(url): #GEt depay time from robots.txt
+def polite(url): #Get depay time from robots.txt
     page_url = urlparse(url)
     base = page_url[0] + '://' + page_url[1]
     robots_url = urljoin(base, '/robots.txt')
@@ -121,24 +125,32 @@ def polite(url): #GEt depay time from robots.txt
     else:
     	time.sleep(1)
 
-def get_file(url): #Download file
-    page_url = urlparse(url)
-    try:
-        response = urllib2.urlopen(url)
-        content_type = response.info().get('Content-Type')
-        if 'application' in content_type:
-    	    filename = str(page_url[2].split('/')[-1])
-    	    with open(filename, "wb") as code:
-    	        code.write(response.read())
-    except:
-        pass
-        	
+def get_file(outlinks): #Download file
+    for url in outlinks:
+        page_url = urlparse(url)
+        try:
+            print "Download from: ", url
+            response = urllib2.urlopen(url)
+	    content_type = response.info().get('Content-Type')
+            if 'application' in content_type:
+    	        filename = str(page_url[2].split('/')[-1])
+    	        with open(filename, "wb") as code:
+    	            code.write(response.read())
+        except:
+            pass
+
+def undupe_index(index):
+    for key in index.keys():
+        index[key] = list(set(index[key]))
+    print "[undupe_index()] Index un-duped"
+    return index
+
 cache = {}
 max_pages = 100
 max_depth = 4
-index, graph = crawl_web('http://www.python.org/download', max_pages, max_depth)
+crawl_list = ['http://www.download.com','http://www.python.org']
+
+index = crawl_web(crawl_list, max_pages, max_depth)
 
 print "INDEX: ", index
-print ""
-print "GRAPH: ", graph
 print ""
