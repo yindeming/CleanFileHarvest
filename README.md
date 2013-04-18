@@ -4,7 +4,6 @@ CleanFileHarvest
 ## Features
 - Maximum crawling depth, pages
 - Repects robots.txt
-- 
 
 
 ## Dependencies
