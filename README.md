@@ -35,7 +35,7 @@ Auto
 
 - Need to modify the location of the file
 
-- Currently can run [python-2.7.5.py](http://python.org/ftp/python/2.7.5/python-2.7.5.msi) and click the first 'Next' button.
+- Currently can run [python-2.7.5.msi](http://python.org/ftp/python/2.7.5/python-2.7.5.msi) and click the first 'Next' button.
 
 ## Reference
 
