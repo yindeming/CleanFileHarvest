@@ -223,19 +223,6 @@ def _normaliseText(controlText):
     Useful for matching control text.'''
     return controlText.lower().replace('&', '')
 
-def clickButton(hwnd):
-    '''Simulates a single mouse click on a button
-
-    Arguments:
-    hwnd    Window handle of the required button.
-
-    Usage example:  okButton = findControl(fontDialog,
-                                           wantedClass="Button",
-                                           wantedText="OK")
-                    clickButton(okButton)
-    '''
-    _sendNotifyMessage(hwnd, win32con.BN_CLICKED)
-
 
 win32api.ShellExecute(0, 'open', 'python-2.7.5.msi', '', '', 1)
 
