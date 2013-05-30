@@ -218,10 +218,10 @@ def _sendNotifyMessage(hwnd, nofifyMessage):
                                                               win32con.GWL_ID)),
                          hwnd)
 
-def _normaliseText(controlText):
-    '''Remove '&' characters, and lower case.
-    Useful for matching control text.'''
-    return controlText.lower().replace('&', '')
+def _normaliseText(text):
+    '''Remove '&' characters,' >' characters, and lower case.
+    Useful for matching text.'''
+    return text.lower().replace('&', '').replace(' >', '')
 
 
 win32api.ShellExecute(0, 'open', 'python-2.7.5.msi', '', '', 1)
