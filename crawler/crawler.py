@@ -4,8 +4,6 @@ from bs4 import BeautifulSoup
 import urllib, urllib2
 from urlparse import urlparse, urljoin
 import robotexclusionrulesparser
-import jabba_webkit as jw
-
 
 def crawl_web(seed, max_pages, max_depth): # returns index, graph of inlinks
     tocrawl = []
@@ -20,7 +18,6 @@ def crawl_web(seed, max_pages, max_depth): # returns index, graph of inlinks
         if page not in crawled and len(crawled) < max_pages and depth <= max_depth:
             polite(page)
 	    soup, url = get_page(page)
-	    soup.append(jw.get_page(page))
 	    cache[url] = soup
             add_page_to_index(index, page, soup)
             outlinks = get_all_links(soup, url)
