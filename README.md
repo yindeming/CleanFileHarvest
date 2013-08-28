@@ -13,13 +13,20 @@ The overall dataflow for the crawling processing looks like:
 ## Requirements
 - Python v2.7+
 - [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
-  'apt-get install python-bs4'
+
+  `apt-get install python-bs4`
 - [Robot Exclusion Rules](http://nikitathespider.com/python/rerp/)
-> easy_install robotexclusionrulesparser
+  
+  `easy_install robotexclusionrulesparser`
 - [PySide and PyQt (crawler-ajax.py)](http://www.pythoncentral.io/install-pyside-pyqt-on-windows-mac-linux/)
-> sudo apt-get install python-pyside
-> sudo apt-get install python-qt4
-- [jabba_webkit.py](https://github.com/jabbalaci/Jabba-Webkit/blob/master/jabba_webkit.py) should be in the same folder with crawler-ajax.py
+  
+  `sudo apt-get install python-pyside`
+ 
+   `sudo apt-get install python-qt4`
+- [jabba_webkit.py](https://github.com/jabbalaci/Jabba-Webkit/blob/master/jabba_webkit.py) 
+
+  should be in the same folder with crawler-ajax.py
+
 ## Usage
 
 ```
