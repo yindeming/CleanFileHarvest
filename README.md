@@ -4,6 +4,7 @@ Crawler
 ## Features
 - Maximum crawling depth, pages
 - Repects robots.txt
+- Able to crawler AJAX pages (crawler-ajax.py)
 
 The overall dataflow for the crawling processing looks like:
 
@@ -13,6 +14,7 @@ The overall dataflow for the crawling processing looks like:
 - Python v2.7+
 - [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 - [Robot Exclusion Rules](http://nikitathespider.com/python/rerp/)
+- [PySide and PyQt (crawler-ajax.py)](http://www.pythoncentral.io/install-pyside-pyqt-on-windows-mac-linux/)
 
 ## Usage
 
