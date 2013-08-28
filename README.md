@@ -19,7 +19,7 @@ The overall dataflow for the crawling processing looks like:
 - [PySide and PyQt (crawler-ajax.py)](http://www.pythoncentral.io/install-pyside-pyqt-on-windows-mac-linux/)
 > sudo apt-get install python-pyside
 > sudo apt-get install python-qt4
-
+- [jabba_webkit.py](https://github.com/jabbalaci/Jabba-Webkit/blob/master/jabba_webkit.py) should be in the same folder with crawler-ajax.py
 ## Usage
 
 ```
