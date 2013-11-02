@@ -3,9 +3,9 @@ from filedownload.items import FiledownloadItem
 
 class InstallerSpider(BaseSpider):
     name = "spider"
-    allowed_domains = ["spftpedia.com"]
+    allowed_domains = ["softpedia.com"]
     start_urls = (
-        'http://win.spftpedia.com/',
+        'http://win.softpedia.com/',
         )
 
     def parse(self, response):
