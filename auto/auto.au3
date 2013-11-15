@@ -4,23 +4,35 @@
 
 Global $avChildren
 
-; Run installer.exe and get its pid
-Local $pid = Run("installer.exe")
-
-;MsgBox(4096, "PID is", $pid)
-
-Sleep(2000)
-
-;; List all the handles
-$hWnd = WinGetHandle("Setup")
-WinListChildren($hWnd, $avChildren)
-
-; Display the array
-_ArrayDisplay($avChildren)
-
-; Try to search wanted text in $avChildren
-
+_Main()
 Exit
+
+Func _Main()
+	; Run installer.exe and get its pid
+	Local $pid = Run("installer.exe")
+
+	;MsgBox(4096, "PID is", $pid)
+
+	Sleep(2000)
+
+	; Try to find slient switch
+	;SilentInstall()
+
+	;; List all the handles
+	$hWnd = WinGetHandle("Setup")
+	WinListChildren($hWnd, $avChildren)
+
+	; Display the array
+	;_ArrayDisplay($avChildren)
+
+	; Try to search wanted button in $avChildren
+	FindButton($avChildren)
+
+EndFunc  ;==>_Main
+
+;Func SilentInstall()
+;	Run("ussf.exe installer.exe")
+;EndFunc
 
 ; http://www.autoitscript.com/forum/topic/98583-list-all-child-controls-of-a-given-window/
 Func WinListChildren($hWnd, ByRef $avArr)
@@ -42,5 +54,19 @@ Func WinListChildren($hWnd, ByRef $avArr)
     WEnd
 
     ReDim $avArr[$avArr[0][0]+1][2]
+EndFunc
+
+Func FindButton(ByRef $avChildren)
+	;Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "finish", "Install"]
+	Local $i
+	While 1
+		For $i = 1 To UBound($avChildren, 1) - 1
+			If $avChildren[$i][1] = "&Next >" Then
+				ControlClick("", "", $avChildren[$i][0])
+				ExitLoop
+			EndIf
+		Next
+	WEnd
+
 EndFunc
 
