@@ -57,14 +57,21 @@ Func WinListChildren($hWnd, ByRef $avArr)
 EndFunc
 
 Func FindButton(ByRef $avChildren)
-	;Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "finish", "Install"]
-	Local $i
+	Local $clickable[9] = ["", "Yes", "&Next", "OK", "Continue", "Accept", "Agree", "finish", "Install"]
+
 	While 1
+		Local $i
 		For $i = 1 To UBound($avChildren, 1) - 1
-			If $avChildren[$i][1] = "&Next >" Then
-				ControlClick("", "", $avChildren[$i][0])
-				ExitLoop
-			EndIf
+			Local $j
+			For $j = 1 To UBound($clickable, 1) - 1
+				If $avChildren[$i][1] <> "" And _
+						$avChildren[$i][1] = $clickable[$j] Or _
+						StringInStr($avChildren[$i][1], $clickable[$j]) Or _
+						StringInStr($clickable[$j], $avChildren[$i][1]) Then
+					ControlClick("", "", $avChildren[$i][0])
+					ExitLoop
+				EndIf
+			Next
 		Next
 	WEnd
 
