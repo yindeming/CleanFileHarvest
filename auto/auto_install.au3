@@ -1,7 +1,4 @@
-; The script is able to reture an array of hwnds which includes the right hwnd, 
-; but not able to switch to the next hwnd when the first hwnd doesn't work
-
-
+; Works for some installers
 
 #include <Array.au3>
 #include <Constants.au3>
@@ -31,23 +28,13 @@ Func _Main()
 		EndIf
 	Next
 
-	;$hwnd = WinGetHandle("Setup")
-	;MsgBox(0, "", $hwnd)
-	;WinListChildren($hwnd, $avChildren)
-	;FindButton($avChildren)
+	;_ArrayDisplay($hwnds)
 
-	;_ArrayAdd($hwnds, WinGetHandle("Setup"))
-	_ArrayDisplay($hwnds)
-
-	While 1
-		Local $hwnd
-		For $k In $hwnds
-			$hwnd = $k
-		Next
-		MsgBox(0, "", "hwnd is" & $hwnd)
-		WinListChildren($hwnd, $avChildren)
+	For $k = 0 To UBound($hwnds, 1) - 1
+		;MsgBox(0, "", "hwnd is" & $hwnds[$k])
+		WinListChildren($hwnds[$k], $avChildren)
 		FindButton($avChildren)
-	WEnd
+	Next
 
 EndFunc
 
@@ -82,7 +69,7 @@ Func WinListChildren($hwnd, ByRef $avArr)
 EndFunc
 
 Func FindButton(ByRef $avChildren)
-	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "finish", "Install"]
+	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "Finish", "Install"]
 
 	While 1
 		Local $i
