@@ -1,3 +1,8 @@
+; The script is able to reture an array of hwnds which includes the right hwnd, 
+; but not able to switch to the next hwnd when the first hwnd doesn't work
+
+
+
 #include <Array.au3>
 #include <Constants.au3>
 #include <WinAPI.au3>
@@ -8,35 +13,41 @@ Exit
 Func _Main()
 	Local $iPID = Run("installer.exe")
 
-	Sleep(3000)
+	Sleep(5000)
 
-	Local $var = WinList()
+	Local $aWinList = WinList(); Get list of windows
 	Local $hwnds[1], $p
 	Local $avChildren
 
+	; Get hwnds with titles from process list
 	Local $i
-	For $i = 1 To $var[0][0]
+	For $i = 1 To $aWinList[0][0]
 		; Only display visble windows that have a title
-		If $var[$i][0] <> "" And IsVisible($var[$i][1]) Then
+		If $aWinList[$i][0] <> "" And IsVisible($aWinList[$i][1]) Then
 			ReDim $hwnds[$p + 1]
-			$hwnds[$p] = WinGetProcess($var[$i][1])
+			$hwnds[$p] = WinGetHandle($aWinList[$i][1])
 			$p += 1
-			;MsgBox(0, "Details", "Title=" & $var[$i][0] & @LF & "Handle=" & $var[$i][1])
+			;MsgBox(0, "Details", "Title=" & $aWinList[$i][0] & @LF & "Handle=" & $aWinList[$i][1])
 		EndIf
 	Next
 
-;	_ArrayDisplay($hwnds)
+	;$hwnd = WinGetHandle("Setup")
+	;MsgBox(0, "", $hwnd)
+	;WinListChildren($hwnd, $avChildren)
+	;FindButton($avChildren)
 
-;	Local $j
-;	For $j = 0 To UBound($hwnds) - 1
-;		MsgBox(0, "", "hwnd is" & $hwnds[$j])
-;		WinListChildren($hwnds[$j], $avChildren)
-;		FindButton($avChildren)
-;	Next
-	For $hwnd In $hwnds
+	;_ArrayAdd($hwnds, WinGetHandle("Setup"))
+	_ArrayDisplay($hwnds)
+
+	While 1
+		Local $hwnd
+		For $k In $hwnds
+			$hwnd = $k
+		Next
+		MsgBox(0, "", "hwnd is" & $hwnd)
 		WinListChildren($hwnd, $avChildren)
 		FindButton($avChildren)
-	Next
+	WEnd
 
 EndFunc
 
@@ -71,7 +82,7 @@ Func WinListChildren($hwnd, ByRef $avArr)
 EndFunc
 
 Func FindButton(ByRef $avChildren)
-	Local $clickable[9] = ["", "Yes", "&Next", "OK", "Continue", "Accept", "Agree", "finish", "Install"]
+	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "finish", "Install"]
 
 	While 1
 		Local $i
@@ -90,3 +101,4 @@ Func FindButton(ByRef $avChildren)
 	WEnd
 
 EndFunc
+
