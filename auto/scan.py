@@ -1,25 +1,21 @@
 import sys
 import os
-from hashlib import md5
 import subprocess
 import socket
 from time import localtime, strftime
 import re
 from optparse import OptionParser
 
-path_to_nvcc_scanner = "C:\\nse7legacy\\nvcc.exe"
+path_to_nvcc_scanner = "data/nse7legacy/nvcc.exe"
 
-def md5sum(data):
-	m = md5()
-	m.update(data)
-	return ({'name': 'md5', 'result': m.hexdigest()})
 
-def nvcc_scanner(fname):
+
+def nvcc_scanner():
 	if os.path.isfile(path_to_nvcc_scanner):
 		env = os.environ.copy()
 		env['WINEDEBUG'] = '-all'
 		output = subprocess.Popen(["wine", path_to_officemalscanner,
-			fname, "scan", "brute"], stdout = subprocess.PIPE, stderr = None, env=env).communicate()[0]
+			 "/U", "D:"], stdout = subprocess.PIPE, stderr = None, env=env).communicate()[0]
 		if "Analysis finished" in output:
 			output = output.split('\r\n')
 			while "Analysis finished" not in output[0]:
@@ -57,11 +53,6 @@ def main():
 	results.append(filename(opts.filename))
 	results.append(filesize(data))
 	results.append(md5sum(data))
-#	results.append(ssdeep(opts.filename))
-#	results.append(clamscan(opts.filename))
-#	results.append(clam_custom(opts.filename))
-#	results.append(yarascan(data))
-#	results.append(yara_packer(data))
 	results.append(officemalscanner(opts.filename))
 #	results.append(fpscan(opts.filename))
 #	results.append(cymruscan(data))
