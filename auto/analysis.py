@@ -32,3 +32,7 @@ def analyze(vm, sample):
 
     
 def main():
+    vm = VMwareAuto(vmx)
+    
+if __name__ == '__main__':
+    main()
