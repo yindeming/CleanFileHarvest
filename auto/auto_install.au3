@@ -71,10 +71,11 @@ EndFunc
 ;Func FindRadioButton()
 ;-I accept
 ;-I agree
+;Ich akzeptiere die Vereinbarung
 ;later
 
 Func FindButton(ByRef $avChildren)
-	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "Finish", "Install", "&Weiter >"]
+	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "Finish", "Install", "&Weiter >", "Installieren", "Fertigstellen"]
 
 	While 1
 		Local $i
