@@ -74,7 +74,7 @@ EndFunc
 ;later
 
 Func FindButton(ByRef $avChildren)
-	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "Finish", "Install"]
+	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "Finish", "Install", "&Weiter >"]
 
 	While 1
 		Local $i
