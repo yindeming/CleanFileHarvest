@@ -68,6 +68,11 @@ Func WinListChildren($hwnd, ByRef $avArr)
     ReDim $avArr[$avArr[0][0]+1][2]
 EndFunc
 
+;Func FindRadioButton()
+;-I accept
+;-I agree
+;later
+
 Func FindButton(ByRef $avChildren)
 	Local $clickable[9] = ["", "Yes", "&Next >", "OK", "Continue", "Accept", "Agree", "Finish", "Install"]
 
